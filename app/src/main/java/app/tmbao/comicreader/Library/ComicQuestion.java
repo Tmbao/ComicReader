@@ -22,7 +22,9 @@ import app.tmbao.comicreader.R;
  * Created by minhbao on 6/29/15.
  */
 public class ComicQuestion {
+    private String directory;
     private String alias;
+
     private String figurePath;
     private String questionStatement;
     private ArrayList<String> options;
@@ -60,8 +62,20 @@ public class ComicQuestion {
         this.figurePath = figurePath;
     }
 
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
+    public void setDirectory(String directory) {
+        this.directory = directory;
+    }
+
     public Bitmap getFigure() {
-        Bitmap bitmap = BitmapFactory.decodeFile(getFigurePath());
+        Bitmap bitmap = BitmapFactory.decodeFile(directory + "/" + getFigurePath());
 
 //            Scale bitmap
         double ratio = (double) bitmap.getWidth() / bitmap.getHeight();
@@ -83,7 +97,8 @@ public class ComicQuestion {
     public ComicQuestion(String jsonString) {
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
-            questionStatement = (String) jsonObject.get("Statement");
+            figurePath = jsonObject.getString("Figure");
+            questionStatement = jsonObject.getString("Statement");
 
             JSONArray jsonArray = jsonObject.getJSONArray("Options");
             options = new ArrayList<>();
@@ -99,6 +114,7 @@ public class ComicQuestion {
     public String toJSON() {
         try {
             JSONObject jsonObject = new JSONObject();
+            jsonObject.put("Figure", figurePath);
             jsonObject.put("Statement", questionStatement);
 
             JSONArray jsonArray = new JSONArray();
@@ -137,6 +153,7 @@ public class ComicQuestion {
 
             ComicQuestion comicQuestion = new ComicQuestion(jsonString);
             comicQuestion.setAlias(MediaHelper.getFileName(path));
+            comicQuestion.setDirectory(MediaHelper.getDirectory(path));
 
             return comicQuestion;
         } catch (FileNotFoundException e) {
@@ -164,11 +181,4 @@ public class ComicQuestion {
         comicQuestion.save(comicDirectory + "/Questions/Question1.json");
     }
 
-    public String getAlias() {
-        return alias;
-    }
-
-    public void setAlias(String alias) {
-        this.alias = alias;
-    }
 }

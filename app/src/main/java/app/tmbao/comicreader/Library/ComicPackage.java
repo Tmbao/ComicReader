@@ -71,7 +71,7 @@ public class ComicPackage {
             pages.add(null);
 
 //        Sample data
-        ComicQuestion.createFixtures(this.comicTitle.getPath());
+//        ComicQuestion.createFixtures(this.comicTitle.getPath());
 
 //        Initialize questions
         questionPaths = MediaHelper.getAllQuestions(comicTitle.getPath());
