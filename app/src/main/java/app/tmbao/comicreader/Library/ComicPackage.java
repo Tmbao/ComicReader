@@ -30,19 +30,7 @@ public class ComicPackage {
     private ArrayList<String> questionPaths;
 
     private Bitmap loadPage(String path) {
-        Bitmap bitmap = BitmapFactory.decodeFile(path);
-
-//            Scale bitmap
-        double ratio = (double) bitmap.getWidth() / bitmap.getHeight();
-        int newWidth = Math.min(R.integer.max_page_width, bitmap.getWidth());
-        int newHeight = Math.min(R.integer.max_page_height, bitmap.getHeight());
-
-        newWidth = (int) Math.min(newWidth, newHeight * ratio);
-        newHeight = (int) Math.min(newHeight, newWidth / ratio);
-
-        bitmap = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, false);
-
-        return bitmap;
+        return MediaHelper.loadPage(path, R.dimen.max_page_width, R.dimen.max_figure_height);
     }
 
     private ComicQuestion loadQuestion(String path) {

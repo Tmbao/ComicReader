@@ -1,6 +1,7 @@
 package app.tmbao.comicreader.Library;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Environment;
 
 import java.io.File;
@@ -8,6 +9,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+
+import app.tmbao.comicreader.R;
 
 /**
  * Created by minhbao on 6/29/15.
@@ -105,6 +108,22 @@ public class MediaHelper {
         }
 
         return allQuestionFiles;
+    }
+
+    public static Bitmap loadPage(String path, int maxWidth, int maxHeight) {
+        Bitmap bitmap = BitmapFactory.decodeFile(path);
+
+//            Scale bitmap
+        double ratio = (double) bitmap.getWidth() / bitmap.getHeight();
+        int newWidth = Math.min(maxWidth, bitmap.getWidth());
+        int newHeight = Math.min(maxHeight, bitmap.getHeight());
+
+        newWidth = (int) Math.min(newWidth, newHeight * ratio);
+        newHeight = (int) Math.min(newHeight, newWidth / ratio);
+
+        bitmap = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, false);
+
+        return bitmap;
     }
 
     public static String getFileName(String path) {

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <integer name="max_page_width">360</integer>
-    <integer name="max_page_height">640</integer>
-
-    <integer name="max_figure_width">256</integer>
-    <integer name="max_figure_height">256</integer>
-</resources>

@@ -75,19 +75,7 @@ public class ComicQuestion {
     }
 
     public Bitmap getFigure() {
-        Bitmap bitmap = BitmapFactory.decodeFile(directory + "/" + getFigurePath());
-
-//            Scale bitmap
-        double ratio = (double) bitmap.getWidth() / bitmap.getHeight();
-        int newWidth = Math.min(R.integer.max_figure_width, bitmap.getWidth());
-        int newHeight = Math.min(R.integer.max_figure_height, bitmap.getHeight());
-
-        newWidth = (int) Math.min(newWidth, newHeight * ratio);
-        newHeight = (int) Math.min(newHeight, newWidth / ratio);
-
-        bitmap = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, false);
-
-        return bitmap;
+        return MediaHelper.loadPage(directory + "/" + getFigurePath(), R.dimen.max_figure_width, R.dimen.max_figure_height);
     }
 
     public ComicQuestion() {

@@ -1,6 +1,9 @@
 package app.tmbao.comicreader.Library;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
+
+import app.tmbao.comicreader.R;
 
 /**
  * Created by minhbao on 6/28/15.
@@ -40,5 +43,9 @@ public class ComicTitleItem {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public Bitmap getThumbnail() {
+        return MediaHelper.loadPage(path + "/_.jpg", R.dimen.max_thumbnail_width, R.dimen.max_thumbnail_height);
     }
 }
