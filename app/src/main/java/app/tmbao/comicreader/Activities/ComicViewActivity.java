@@ -1,15 +1,17 @@
 package app.tmbao.comicreader.Activities;
 
 import android.app.Activity;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.OrientationEventListener;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import app.tmbao.comicreader.Library.ComicPackage;
-import app.tmbao.comicreader.Library.ComicImageView;
+import app.tmbao.comicreader.UI.ComicImageView;
 import app.tmbao.comicreader.Library.ComicPageIdItem;
 import app.tmbao.comicreader.R;
 
@@ -22,6 +24,8 @@ public class ComicViewActivity extends Activity {
     Button nextButton, previousButton;
     TextView currentPageIdText;
 
+    OrientationEventListener orientationEventListener;
+
     private void fetchingPages() {
         comicPackage = ComicPackage.getInstance();
 
@@ -29,17 +33,17 @@ public class ComicViewActivity extends Activity {
 
         Bundle bundle = getIntent().getBundleExtra("ComicPageId");
 //        Set currentPageView
-        try {
-            if (bundle != null)
-                comicPageId = new ComicPageIdItem(bundle);
-            else
-                comicPageId = new ComicPageIdItem(0);
+        if (bundle != null)
+            comicPageId = new ComicPageIdItem(bundle);
+        else
+            comicPageId = new ComicPageIdItem(0);
 
-//            Jump to pageId
-            currentPageView.setImageBitmap(comicPackage.getPage(comicPageId.getPageId()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        Jump to pageId
+        currentPageView.setImageBitmap(comicPackage.getPage(comicPageId.getPageId()));
+    }
+
+    void updateOrientation(int orientation) {
+        currentPageView.setImageBitmap(comicPackage.getPage(comicPageId.getPageId()));
     }
 
     private void initializeComponents() {
@@ -52,11 +56,7 @@ public class ComicViewActivity extends Activity {
             @Override
             public void onClick(View v) {
                 comicPageId.setPageId(comicPageId.getPageId() + 1);
-                try {
-                    currentPageView.setImageBitmap(comicPackage.getPage(comicPageId.getPageId()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                currentPageView.setImageBitmap(comicPackage.getPage(comicPageId.getPageId()));
             }
         });
 
@@ -64,11 +64,7 @@ public class ComicViewActivity extends Activity {
             @Override
             public void onClick(View v) {
                 comicPageId.setPageId(comicPageId.getPageId() - 1);
-                try {
-                    currentPageView.setImageBitmap(comicPackage.getPage(comicPageId.getPageId()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                currentPageView.setImageBitmap(comicPackage.getPage(comicPageId.getPageId()));
             }
         });
 
@@ -90,6 +86,13 @@ public class ComicViewActivity extends Activity {
                 currentPageIdText.setText("Page " + String.valueOf(comicPageId.getPageId()) + "/" + String.valueOf(comicPackage.numberOfPages()));
             }
         });
+
+        orientationEventListener = new OrientationEventListener(this, SensorManager.SENSOR_DELAY_NORMAL) {
+            @Override
+            public void onOrientationChanged(int orientation) {
+                updateOrientation(orientation);
+            }
+        };
     }
 
     @Override

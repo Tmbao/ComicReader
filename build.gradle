@@ -2,7 +2,9 @@
 
 buildscript {
     repositories {
+        mavenCentral()
         jcenter()
+        maven { url 'https://maven.parse.com/repo' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:1.2.3'

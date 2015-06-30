@@ -10,6 +10,11 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <com.facebook.login.widget.LoginButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"/>
+
     <ListView
         android:id="@+id/list_comic"
         android:layout_width="fill_parent"

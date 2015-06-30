@@ -1,1 +1,1 @@
-include ':app'
+include ':app', ':facebook', ':bolts-android-1.2.0'

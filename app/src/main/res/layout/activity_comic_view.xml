@@ -10,7 +10,7 @@
     android:orientation="vertical"
     tools:context="app.tmbao.comicreader.Activities.ComicViewActivity">
 
-    <app.tmbao.comicreader.Library.ComicImageView
+    <app.tmbao.comicreader.UI.ComicImageView
         android:id="@+id/image_current_page"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

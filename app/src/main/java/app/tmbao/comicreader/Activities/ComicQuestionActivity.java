@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -55,12 +56,16 @@ public class ComicQuestionActivity extends Activity {
     private boolean verifyAnswer(int selectedOption) {
         if (comicPackage.getQuestion(currentQuestionId).getCorrectOption() == selectedOption) {
             Toast.makeText(getApplicationContext(), "Your answer is correct!", Toast.LENGTH_SHORT).show();
-            comicRecord.updateQuestion(comicPackage.getTitle() + "_" + comicPackage.getQuestion(currentQuestionId).getAlias());
+            comicRecord.updateQuestion(this, comicPackage.getTitle() + "_" + comicPackage.getQuestion(currentQuestionId).getAlias());
             return true;
         } else {
             Toast.makeText(getApplicationContext(), "Your answer is wrong!", Toast.LENGTH_SHORT).show();
             return false;
         }
+    }
+
+    private void showHint() {
+        comicRecord.showQuestionHint(this, currentQuestionId);
     }
 
     private void initializeComponents() {
@@ -78,6 +83,14 @@ public class ComicQuestionActivity extends Activity {
                         finish();
                     }
                 }
+            }
+        });
+
+        Button hintButton = (Button) findViewById(R.id.button_hint);
+        hintButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showHint();
             }
         });
     }

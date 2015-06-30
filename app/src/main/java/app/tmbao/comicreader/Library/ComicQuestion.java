@@ -111,7 +111,7 @@ public class ComicQuestion {
             jsonObject.put("Options", jsonArray);
             jsonObject.put("Correct", correctOption);
 
-            return jsonObject.toString();
+            return jsonObject.toString(4);
         } catch (JSONException e) {
             e.printStackTrace();
             return null;
@@ -134,8 +134,7 @@ public class ComicQuestion {
             File file = new File(path);
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String jsonString = "";
-            String line;
-            while ((line = reader.readLine()) != null)
+            for (String line; (line = reader.readLine()) != null; )
                 jsonString += line;
             reader.close();
 

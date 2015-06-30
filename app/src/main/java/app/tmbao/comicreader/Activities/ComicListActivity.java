@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import app.tmbao.comicreader.Library.ComicAchievementManager;
 import app.tmbao.comicreader.Library.ComicPackage;
 import app.tmbao.comicreader.Library.ComicRecord;
 import app.tmbao.comicreader.Library.ComicTitleItem;
@@ -32,7 +33,11 @@ public class ComicListActivity extends Activity {
 
     private void fetchingAllComics() {
         comicTitleItems = MediaHelper.getAllComicTitle();
-        ComicRecord.getInstance().loadRecord(this);
+
+//        Load record
+        ComicRecord.getInstance().load(this);
+//        Load achievements
+        ComicAchievementManager.getInstance().load(this);
     }
 
     private void initializeListComicTitle() {

@@ -1,0 +1,18 @@
+[
+    {
+        "RequiredScore": 1,
+        "LevelName": "Amateur"
+    },
+    {
+        "RequiredScore": 5,
+        "LevelName": "Pupil"
+    },
+    {
+        "RequiredScore": 10,
+        "LevelName": "Expert"
+    },
+    {
+        "RequiredScore": 15,
+        "LevelName": "KhoaRau"
+    }
+]
