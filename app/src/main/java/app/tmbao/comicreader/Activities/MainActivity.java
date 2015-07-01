@@ -110,6 +110,8 @@ public class MainActivity extends Activity {
 //        Load achievements
         comicAchievementManager = ComicAchievementManager.getInstance();
         comicAchievementManager.load(this);
+
+        updateShareContent(comicAchievementManager.getAchievement(comicUserManager.getScore()));
     }
 
     private void initializeListComicTitle() {
@@ -132,7 +134,8 @@ public class MainActivity extends Activity {
             profilePictureView.setProfileId(profile.getId());
             userNameText.setText(profile.getName());
 
-            updateShareContent(comicAchievementManager.getAchievement(comicUserManager.getScore()));
+            if (comicAchievementManager != null && comicUserManager != null)
+                updateShareContent(comicAchievementManager.getAchievement(comicUserManager.getScore()));
         } else {
             userNameText.setText("Default User");
             profilePictureView.setProfileId(null);
