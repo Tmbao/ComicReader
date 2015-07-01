@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Comic Reader</string>
+    <string name="facebook_app_id">422222044632027</string>
     <string name="title_activity_comic_preview">Comic Preview Activity</string>
 
     <string name="action_settings">Settings</string>
@@ -7,5 +8,7 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_comic_question">Review Questions</string>
+    <string name="title_activity_comic_login">ComicLoginActivity</string>
+    <string name="search">Search</string>
 
 </resources>

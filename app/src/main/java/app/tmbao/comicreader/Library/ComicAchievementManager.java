@@ -44,6 +44,18 @@ public class ComicAchievementManager {
         return achievements.get(left);
     }
 
+    public ComicAchievement getNextAchievement(int score) {
+        int left = 0, right = achievements.size() - 1;
+        while (left < right) {
+            int mid = (left + right) / 2;
+            if (achievements.get(mid).getRequiredScore() <= score)
+                left = mid + 1;
+            else
+                right = mid;
+        }
+        return achievements.get(left);
+    }
+
     public void load(Context context) {
         achievements = new ArrayList<>();
 

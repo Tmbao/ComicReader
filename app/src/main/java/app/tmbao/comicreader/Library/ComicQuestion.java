@@ -25,7 +25,6 @@ public class ComicQuestion {
     private String directory;
     private String alias;
 
-    private String figurePath;
     private String questionStatement;
     private ArrayList<String> options;
     private int correctOption;
@@ -54,14 +53,6 @@ public class ComicQuestion {
         this.correctOption = correctOption;
     }
 
-    public String getFigurePath() {
-        return figurePath;
-    }
-
-    public void setFigurePath(String figurePath) {
-        this.figurePath = figurePath;
-    }
-
     public String getAlias() {
         return alias;
     }
@@ -74,10 +65,6 @@ public class ComicQuestion {
         this.directory = directory;
     }
 
-    public Bitmap getFigure() {
-        return MediaHelper.loadPage(directory + "/" + getFigurePath(), R.dimen.max_figure_width, R.dimen.max_figure_height);
-    }
-
     public ComicQuestion() {
         options = new ArrayList<>();
     }
@@ -85,7 +72,6 @@ public class ComicQuestion {
     public ComicQuestion(String jsonString) {
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
-            figurePath = jsonObject.getString("Figure");
             questionStatement = jsonObject.getString("Statement");
 
             JSONArray jsonArray = jsonObject.getJSONArray("Options");
@@ -102,7 +88,6 @@ public class ComicQuestion {
     public String toJSON() {
         try {
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("Figure", figurePath);
             jsonObject.put("Statement", questionStatement);
 
             JSONArray jsonArray = new JSONArray();
@@ -149,23 +134,6 @@ public class ComicQuestion {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public static ComicQuestion getSampleQuestion() {
-        ComicQuestion comicQuestion = new ComicQuestion();
-        comicQuestion.figurePath = "";
-        comicQuestion.questionStatement = "Evaluate 1 + 1";
-        comicQuestion.options.add("1 + 1 = 1");
-        comicQuestion.options.add("1 + 1 = 2");
-        comicQuestion.options.add("1 + 1 = 3");
-        comicQuestion.options.add("1 + 1 = 4");
-        comicQuestion.correctOption = 1;
-        return comicQuestion;
-    }
-
-    public static void createFixtures(String comicDirectory) {
-        ComicQuestion comicQuestion = getSampleQuestion();
-        comicQuestion.save(comicDirectory + "/Questions/Question1.json");
     }
 
 }

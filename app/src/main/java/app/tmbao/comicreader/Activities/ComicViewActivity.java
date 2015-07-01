@@ -1,35 +1,38 @@
 package app.tmbao.comicreader.Activities;
 
 import android.app.Activity;
-import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.OrientationEventListener;
 import android.view.View;
-import android.widget.Button;
+import android.webkit.WebView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 import app.tmbao.comicreader.Library.ComicPackage;
-import app.tmbao.comicreader.UI.ComicImageView;
 import app.tmbao.comicreader.Library.ComicPageIdItem;
 import app.tmbao.comicreader.R;
 
 public class ComicViewActivity extends Activity {
 
+    TextToSpeech textToSpeech;
+
     ComicPackage comicPackage;
     ComicPageIdItem comicPageId;
 
-    ComicImageView currentPageView;
-    Button nextButton, previousButton;
+    ImageButton nextButton;
+    ImageButton previousButton;
+    ImageButton playButton;
     TextView currentPageIdText;
-
-    OrientationEventListener orientationEventListener;
+    WebView webView;
 
     private void fetchingPages() {
         comicPackage = ComicPackage.getInstance();
-
-        getActionBar().setTitle(comicPackage.getTitle());
 
         Bundle bundle = getIntent().getBundleExtra("ComicPageId");
 //        Set currentPageView
@@ -39,24 +42,24 @@ public class ComicViewActivity extends Activity {
             comicPageId = new ComicPageIdItem(0);
 
 //        Jump to pageId
-        currentPageView.setImageBitmap(comicPackage.getPage(comicPageId.getPageId()));
-    }
-
-    void updateOrientation(int orientation) {
-        currentPageView.setImageBitmap(comicPackage.getPage(comicPageId.getPageId()));
+        updatePage();
     }
 
     private void initializeComponents() {
-        currentPageView = (ComicImageView) findViewById(R.id.image_current_page);
-        nextButton = (Button) findViewById(R.id.button_next);
-        previousButton = (Button) findViewById(R.id.button_previous);
+        comicPackage = ComicPackage.getInstance();
+        getActionBar().setTitle(comicPackage.getTitle());
+
+        nextButton = (ImageButton) findViewById(R.id.button_next);
+        previousButton = (ImageButton) findViewById(R.id.button_previous);
+        playButton = (ImageButton) findViewById(R.id.button_play);
         currentPageIdText = (TextView) findViewById(R.id.text_current_page_id);
+        webView = (WebView) findViewById(R.id.webview_page_content);
 
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 comicPageId.setPageId(comicPageId.getPageId() + 1);
-                currentPageView.setImageBitmap(comicPackage.getPage(comicPageId.getPageId()));
+                updatePage();
             }
         });
 
@@ -64,42 +67,63 @@ public class ComicViewActivity extends Activity {
             @Override
             public void onClick(View v) {
                 comicPageId.setPageId(comicPageId.getPageId() - 1);
-                currentPageView.setImageBitmap(comicPackage.getPage(comicPageId.getPageId()));
+                updatePage();
             }
         });
 
-        currentPageView.setOnSetImageListener(new ComicImageView.OnSetImageListener() {
+        playButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void imageChanged() { // Page change
-//                Start page
-                if (comicPageId.getPageId() == 0)
-                    previousButton.setEnabled(false);
-                else
-                    previousButton.setEnabled(true);
-
-//                Last page
-                if (comicPageId.getPageId() == comicPackage.numberOfPages() - 1)
-                    nextButton.setEnabled(false);
-                else
-                    nextButton.setEnabled(true);
-
-                currentPageIdText.setText("Page " + String.valueOf(comicPageId.getPageId()) + "/" + String.valueOf(comicPackage.numberOfPages()));
+            public void onClick(View v) {
+                Spanned text = Html.fromHtml(comicPackage.getPageText(comicPageId.getPageId()));
+                textToSpeech.speak(text.toString(), TextToSpeech.QUEUE_FLUSH, null);
             }
         });
 
-        orientationEventListener = new OrientationEventListener(this, SensorManager.SENSOR_DELAY_NORMAL) {
+        textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
-            public void onOrientationChanged(int orientation) {
-                updateOrientation(orientation);
+            public void onInit(int status) {
+                if (status != TextToSpeech.ERROR) {
+                    textToSpeech.setLanguage(Locale.US);
+                }
             }
-        };
+        });
+    }
+
+    private void updatePage() {
+
+        if (textToSpeech != null)
+            textToSpeech.stop();
+
+        webView.loadDataWithBaseURL("", comicPackage.getPageText(comicPageId.getPageId()), "text/html", "UTF-8", "");
+
+//        Start page
+        if (comicPageId.getPageId() == 0)
+            previousButton.setEnabled(false);
+        else
+            previousButton.setEnabled(true);
+
+//        Last page
+        if (comicPageId.getPageId() == comicPackage.numberOfPages() - 1)
+            nextButton.setEnabled(false);
+        else
+            nextButton.setEnabled(true);
+
+        currentPageIdText.setText("Page " + String.valueOf(comicPageId.getPageId()) + "/" + String.valueOf(comicPackage.numberOfPages()));
+    }
+
+    @Override
+    protected void onPause() {
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
+        super.onPause();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comic_view);
-
         initializeComponents();
         fetchingPages();
     }

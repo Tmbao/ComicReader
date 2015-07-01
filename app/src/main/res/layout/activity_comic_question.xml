@@ -19,38 +19,33 @@
             android:layout_height="fill_parent"
             android:orientation="vertical" >
 
-            <ImageView
-                android:id="@+id/image_question"
-                android:layout_width="@dimen/max_figure_width"
-                android:layout_height="@dimen/max_figure_height"
-                android:layout_gravity="center" />
+            <WebView
+                android:id="@+id/webview_question_statement"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/max_question_webview_height" />
+
 
             <LinearLayout
+                android:paddingTop="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:orientation="horizontal" >
 
-                <TextView
-                    android:id="@+id/text_question_statement"
+                <ListView
+                    android:id="@+id/list_options"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Evaluate 1 + 1"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"/>
 
-                <Button
+                <ImageButton
                     android:id="@+id/button_hint"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hint" />
+                    android:src="@drawable/ic_help_outline_black_24dp" />
 
             </LinearLayout>
 
-            <ListView
-                android:id="@+id/list_options"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+
 
         </LinearLayout>
 

@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -15,17 +17,16 @@ import android.widget.Toast;
 import app.tmbao.comicreader.Library.ComicPackage;
 import app.tmbao.comicreader.Library.ComicQuestion;
 import app.tmbao.comicreader.Library.ComicQuestionOptionArrayAdapter;
-import app.tmbao.comicreader.Library.ComicRecord;
+import app.tmbao.comicreader.Library.ComicUserManager;
 import app.tmbao.comicreader.R;
 
 public class ComicQuestionActivity extends Activity {
 
-    ImageView figure;
-    TextView questionStatement;
+    WebView questionStatement;
     ListView questionOptions;
 
     ComicPackage comicPackage;
-    ComicRecord comicRecord;
+    ComicUserManager comicUserManager;
     int currentQuestionId;
 
     private boolean showQuestion(int currentQuestionId) {
@@ -33,12 +34,7 @@ public class ComicQuestionActivity extends Activity {
             return false;
 
         ComicQuestion question = comicPackage.getQuestion(currentQuestionId);
-        try {
-            figure.setImageBitmap(question.getFigure());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        questionStatement.setText(question.getQuestionStatement());
+        questionStatement.loadDataWithBaseURL("", question.getQuestionStatement(), "text/html", "UTF-8", "");
 
         ComicQuestionOptionArrayAdapter adapter = new ComicQuestionOptionArrayAdapter(this, question.getOptions());
         questionOptions.setAdapter(adapter);
@@ -49,14 +45,14 @@ public class ComicQuestionActivity extends Activity {
 
     private void fetchingAllQuestions() {
         comicPackage = ComicPackage.getInstance();
-        comicRecord = ComicRecord.getInstance();
+        comicUserManager = ComicUserManager.getInstance();
         currentQuestionId = 0;
     }
 
     private boolean verifyAnswer(int selectedOption) {
         if (comicPackage.getQuestion(currentQuestionId).getCorrectOption() == selectedOption) {
             Toast.makeText(getApplicationContext(), "Your answer is correct!", Toast.LENGTH_SHORT).show();
-            comicRecord.updateQuestion(this, comicPackage.getTitle() + "_" + comicPackage.getQuestion(currentQuestionId).getAlias());
+            comicUserManager.updateQuestion(this, comicPackage.getTitle() + "_" + comicPackage.getQuestion(currentQuestionId).getAlias());
             return true;
         } else {
             Toast.makeText(getApplicationContext(), "Your answer is wrong!", Toast.LENGTH_SHORT).show();
@@ -65,12 +61,11 @@ public class ComicQuestionActivity extends Activity {
     }
 
     private void showHint() {
-        comicRecord.showQuestionHint(this, currentQuestionId);
+        comicUserManager.showQuestionHint(this, currentQuestionId);
     }
 
     private void initializeComponents() {
-        figure = (ImageView) findViewById(R.id.image_question);
-        questionStatement = (TextView) findViewById(R.id.text_question_statement);
+        questionStatement = (WebView) findViewById(R.id.webview_question_statement);
         questionOptions = (ListView) findViewById(R.id.list_options);
 
         questionOptions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -86,7 +81,7 @@ public class ComicQuestionActivity extends Activity {
             }
         });
 
-        Button hintButton = (Button) findViewById(R.id.button_hint);
+        ImageButton hintButton = (ImageButton) findViewById(R.id.button_hint);
         hintButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,6 +97,9 @@ public class ComicQuestionActivity extends Activity {
 
         initializeComponents();
         fetchingAllQuestions();
+
+        if (comicPackage.numberOfQuestions() == 0)
+            finish();
 
         showQuestion(0);
     }

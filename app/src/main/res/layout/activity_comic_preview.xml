@@ -10,12 +10,6 @@
     android:orientation="vertical"
     tools:context="app.tmbao.comicreader.Activities.ComicPreviewActivity">
 
-    <Button
-        android:id="@+id/button_do_question"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Do Questions" />
-
     <ListView
         android:id="@+id/list_page_id"
         android:layout_width="match_parent"

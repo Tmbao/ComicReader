@@ -69,7 +69,8 @@ public class MediaHelper {
                         if (file != null)
                             if (!file.isDirectory())
                                 try {
-                                    allPageFiles.add(file.getCanonicalPath());
+                                    if (getExtension(file.getCanonicalPath()).compareTo("html") == 0)
+                                        allPageFiles.add(file.getCanonicalPath());
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -130,7 +131,23 @@ public class MediaHelper {
         return path.substring(path.lastIndexOf("/") + 1);
     }
 
+    public static String getFileBaseName(String path) {
+        String ret = getFileName(path);
+        int extPosition = ret.lastIndexOf(".");
+        if (extPosition != -1)
+            ret = ret.substring(0, extPosition);
+        return ret;
+    }
+
     public static String getDirectory(String path) {
         return path.substring(0, path.lastIndexOf("/"));
+    }
+
+    public static String getExtension(String path) {
+        String ret = getFileName(path);
+        int extPosition = ret.lastIndexOf(".");
+        if (extPosition != -1)
+            ret = ret.substring(ret.lastIndexOf(".") + 1, ret.length());
+        return ret;
     }
 }

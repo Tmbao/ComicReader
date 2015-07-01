@@ -3,12 +3,24 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="max_page_width">360dp</dimen>
-    <dimen name="max_page_height">640dp</dimen>
+    <dimen name="max_page_image_width">360dp</dimen>
+    <dimen name="max_page_image_height">240dp</dimen>
+
+    <dimen name="max_page_text_width">360dp</dimen>
+    <dimen name="max_page_text_height">240dp</dimen>
+
+    <dimen name="max_page_webview_width">360dp</dimen>
+    <dimen name="max_page_webview_height">440dp</dimen>
+
+    <dimen name="max_question_webview_width">360dp</dimen>
+    <dimen name="max_question_webview_height">240dp</dimen>
 
     <dimen name="max_figure_width">256dp</dimen>
     <dimen name="max_figure_height">256dp</dimen>
 
-    <dimen name="max_thumbnail_width">48dp</dimen>
-    <dimen name="max_thumbnail_height">48dp</dimen>
+    <dimen name="max_thumbnail_width">32dp</dimen>
+    <dimen name="max_thumbnail_height">32dp</dimen>
+
+    <dimen name="image_achievement_width">24dp</dimen>
+    <dimen name="image_achievement_height">24dp</dimen>
 </resources>

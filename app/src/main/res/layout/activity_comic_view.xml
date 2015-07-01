@@ -10,38 +10,44 @@
     android:orientation="vertical"
     tools:context="app.tmbao.comicreader.Activities.ComicViewActivity">
 
-    <app.tmbao.comicreader.UI.ComicImageView
-        android:id="@+id/image_current_page"
-        android:layout_width="fill_parent"
+    <WebView
+        android:id="@+id/webview_page_content"
+        android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="1" />
+        android:background="@android:color/transparent"
+        android:layout_weight="1"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/button_previous"
-            android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageButton
+            android:id="@+id/button_play"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_weight="1"
-            android:text="Previous" />
+            android:src="@drawable/ic_play_circle_outline_black_24dp"/>
+
         <TextView
             android:id="@+id/text_current_page_id"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_height="match_parent"
+            android:textSize="18dp"
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_weight="1"
             android:text="Page" />
-        <Button
-            android:id="@+id/button_next"
-            android:layout_width="match_parent"
+        <ImageButton
+            android:id="@+id/button_previous"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_weight="1"
-            android:text="Next" />
+            android:layout_gravity="center"
+            android:src="@drawable/ic_navigate_before_black_24dp" />
+        <ImageButton
+            android:id="@+id/button_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_navigate_next_black_24dp" />
     </LinearLayout>
 
 </LinearLayout>

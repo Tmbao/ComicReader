@@ -1,30 +1,24 @@
 package app.tmbao.comicreader.Library;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-
-import app.tmbao.comicreader.Activities.ComicQuestionActivity;
-import app.tmbao.comicreader.R;
 
 /**
  * Created by minhbao on 6/29/15.
  */
-public class ComicRecord {
-    private static ComicRecord ourInstance = new ComicRecord();
+public class ComicUserManager {
+    private static ComicUserManager ourInstance = new ComicUserManager();
 
-    public static ComicRecord getInstance() {
+    public static ComicUserManager getInstance() {
         return ourInstance;
     }
 
-    private ComicRecord() {
+    private ComicUserManager() {
     }
 
     private int score;

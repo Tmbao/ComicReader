@@ -1,18 +1,27 @@
 [
     {
-        "RequiredScore": 1,
+        "RequiredScore": 0,
+        "LevelImage": "beginner_amateur",
+        "LevelName": "Beginner"
+    },
+    {
+        "RequiredScore": 2,
+        "LevelImage": "beginner_amateur",
         "LevelName": "Amateur"
     },
     {
         "RequiredScore": 5,
+        "LevelImage": "pupil_expert",
         "LevelName": "Pupil"
     },
     {
         "RequiredScore": 10,
+        "LevelImage": "pupil_expert",
         "LevelName": "Expert"
     },
     {
-        "RequiredScore": 15,
-        "LevelName": "KhoaRau"
+        "RequiredScore": 20,
+        "LevelImage": "candidate",
+        "LevelName": "Candidate"
     }
 ]

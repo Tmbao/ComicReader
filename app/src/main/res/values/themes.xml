@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ComicLightTheme" parent="@android:style/Theme.Material.Light.DarkActionBar">
+        <item name="android:colorPrimaryDark">@color/com_facebook_button_background_color_pressed</item>
+        <item name="android:colorPrimary">@color/com_facebook_button_background_color</item>
+        <item name="android:windowBackground">@android:color/white</item>
+    </style>
+</resources>

@@ -20,7 +20,6 @@ import app.tmbao.comicreader.R;
 public class ComicPreviewActivity extends Activity {
 
     private ListView listPageId;
-    private Button doQuestionButton;
     private ArrayList<ComicPageIdItem> pageIdItems;
     private ComicPackage comicPackage;
 
@@ -65,13 +64,6 @@ public class ComicPreviewActivity extends Activity {
             }
         });
 
-        doQuestionButton = (Button) findViewById(R.id.button_do_question);
-        doQuestionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showQuestions();
-            }
-        });
     }
 
     @Override
@@ -101,6 +93,8 @@ public class ComicPreviewActivity extends Activity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.action_question) {
+            showQuestions();
         }
 
         return super.onOptionsItemSelected(item);

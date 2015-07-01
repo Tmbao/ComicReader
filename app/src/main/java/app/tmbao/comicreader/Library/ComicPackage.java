@@ -1,8 +1,12 @@
 package app.tmbao.comicreader.Library;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import app.tmbao.comicreader.R;
@@ -23,24 +27,14 @@ public class ComicPackage {
 
     private ComicTitleItem comicTitle;
 
-    private ArrayList<Bitmap> pages;
+    private ArrayList<String> pageTexts;
     private ArrayList<String> pagePaths;
 
     private ArrayList<ComicQuestion> questions;
     private ArrayList<String> questionPaths;
 
-    private Bitmap loadPage(String path) {
-        return MediaHelper.loadPage(path, R.dimen.max_page_width, R.dimen.max_figure_height);
-    }
-
     private ComicQuestion loadQuestion(String path) {
         return ComicQuestion.load(path);
-    }
-
-    public Bitmap getPage(int index) {
-        if (pages.get(index) == null)
-            pages.set(index, loadPage(pagePaths.get(index)));
-        return pages.get(index);
     }
 
     public ComicQuestion getQuestion(int index) {
@@ -49,14 +43,34 @@ public class ComicPackage {
         return questions.get(index);
     }
 
+    private String loadPageText(String path) {
+        String ret = "";
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(new File(path)));
+            for (String line; (line = reader.readLine()) != null; )
+                ret += line + "\n";
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
+    public String getPageText(int index) {
+        if (pageTexts.get(index) == null)
+            pageTexts.set(index, loadPageText(pagePaths.get(index)));
+        return pageTexts.get(index);
+    }
+
     public void setComic(ComicTitleItem comicTitle) {
         this.comicTitle = comicTitle;
 
-//        Initialize pages
+//        Initialize pageFigures
         pagePaths = MediaHelper.getAllPageFiles(comicTitle.getPath());
-        pages = new ArrayList<>();
+        pageTexts = new ArrayList<>();
         for (int index = 0; index < numberOfPages(); index++)
-            pages.add(null);
+            pageTexts.add(null);
 
 //        Sample data
 //        ComicQuestion.createFixtures(this.comicTitle.getPath());
