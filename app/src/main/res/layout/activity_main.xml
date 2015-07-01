@@ -10,13 +10,30 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/button_login_facebook"
-        android:layout_gravity="right"
-        android:gravity="center"
-        android:layout_width="wrap_content"
+    <GridLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"/>
+        android:columnCount="2"
+        android:rowCount="1"
+        android:layout_marginBottom="5dp">
+
+        <com.facebook.share.widget.ShareButton
+            android:id="@+id/button_share_facebook"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:layout_gravity="left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/button_login_facebook"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:layout_gravity="right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </GridLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,6 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_gravity="bottom"
             android:padding="10dp">
 
             <TextView
@@ -53,6 +71,7 @@
                     android:id="@+id/image_achievement"
                     android:layout_gravity="center_vertical"
                     android:scaleType="fitCenter"
+                    android:src="@drawable/beginner_amateur"
                     android:layout_width="@dimen/image_achievement_width"
                     android:layout_height="@dimen/image_achievement_height" />
                 <TextView
@@ -66,6 +85,7 @@
                     android:textSize="18dp" />
             </LinearLayout>
             <ProgressBar
+                android:layout_marginLeft="10dp"
                 android:id="@+id/progress_score"
                 android:progress="50"
                 style="@android:style/Widget.Material.ProgressBar.Horizontal"

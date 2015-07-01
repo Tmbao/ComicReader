@@ -1,8 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="app.tmbao.comicreader.Activities.ComicPreviewActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" android:showAsAction="never" />
     <item android:id="@+id/action_question" android:title="Open Questions"
         android:icon="@drawable/ic_question_answer_white_24dp"
         android:showAsAction="ifRoom" />

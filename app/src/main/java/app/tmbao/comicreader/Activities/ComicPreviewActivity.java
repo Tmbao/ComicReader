@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -29,7 +28,7 @@ public class ComicPreviewActivity extends Activity {
         getActionBar().setTitle(comicPackage.getTitle());
 
         pageIdItems = new ArrayList<>();
-        int numberOfPages = comicPackage.numberOfPages();
+        int numberOfPages = comicPackage.getNumberOfPages();
         for (int index = 0; index < numberOfPages; index++)
             pageIdItems.add(new ComicPageIdItem(index));
     }
@@ -91,10 +90,9 @@ public class ComicPreviewActivity extends Activity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        } else if (id == R.id.action_question) {
+        if (id == R.id.action_question) {
             showQuestions();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

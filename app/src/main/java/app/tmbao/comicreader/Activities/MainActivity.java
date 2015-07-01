@@ -33,6 +33,10 @@ import com.facebook.Profile;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.facebook.login.widget.ProfilePictureView;
+import com.facebook.share.model.ShareContent;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
+import com.facebook.share.widget.ShareButton;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -66,9 +70,20 @@ public class MainActivity extends Activity {
     private TextView userNameText;
     private ProfilePictureView profilePictureView;
     private LoginButton loginButton;
+    private static ShareButton shareButton;
 
     private ComicAchievementManager comicAchievementManager;
     private ComicUserManager comicUserManager;
+
+    private static Context applicationContext;
+
+    public static void updateShareContent(ComicAchievement achievement) {
+        SharePhoto photo = new SharePhoto.Builder().setBitmap(achievement.getLevelImageLarge(applicationContext)).build();
+        SharePhotoContent content = new SharePhotoContent.Builder().addPhoto(photo).build();
+
+        MainActivity.shareButton.setContentDescription(Profile.getCurrentProfile().getLastName() + " has become " + achievement.getLevelName());
+        MainActivity.shareButton.setShareContent(content);
+    }
 
     private void updateScore() {
 //
@@ -82,6 +97,7 @@ public class MainActivity extends Activity {
 //        Set title
         achievementText.setText(currentAchievement.getLevelName());
         achievementImage.setImageBitmap(currentAchievement.getLevelImage(this));
+
     }
 
     private void fetchingAllComics() {
@@ -93,6 +109,8 @@ public class MainActivity extends Activity {
 //        Load achievements
         comicAchievementManager = ComicAchievementManager.getInstance();
         comicAchievementManager.load(this);
+
+        updateShareContent(comicAchievementManager.getAchievement(comicUserManager.getScore()));
     }
 
     private void initializeListComicTitle() {
@@ -169,6 +187,8 @@ public class MainActivity extends Activity {
             }
         });
 
+        shareButton = (ShareButton) findViewById(R.id.button_share_facebook);
+
         scoreProgress = (ProgressBar) findViewById(R.id.progress_score);
         achievementText = (TextView) findViewById(R.id.text_achievement);
         achievementImage = (ImageView) findViewById(R.id.image_achievement);
@@ -200,15 +220,18 @@ public class MainActivity extends Activity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
 
+        applicationContext = this;
+
         initializeComponents();
         fetchingAllComics();
         initializeListComicTitle();
     }
 
     private void loadSuggestions(String text) {
+        text = text.toLowerCase();
         ArrayList<ComicTitleItem> suggItems = new ArrayList<ComicTitleItem>();
         for (int index = 0; index < comicTitleItems.size(); index++)
-            if (comicTitleItems.get(index).getTitle().contains(text)) {
+            if (comicTitleItems.get(index).getTitle().toLowerCase().contains(text)) {
                 suggItems.add(comicTitleItems.get(index));
             }
         listComic.setAdapter(new ComicTitleArrayAdapter(this, suggItems));
@@ -249,10 +272,6 @@ public class MainActivity extends Activity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 }

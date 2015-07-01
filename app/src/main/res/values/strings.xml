@@ -10,5 +10,6 @@
     <string name="title_activity_comic_question">Review Questions</string>
     <string name="title_activity_comic_login">ComicLoginActivity</string>
     <string name="search">Search</string>
+    <string name="title_activity_comic_splash_screen">ComicSplashScreen</string>
 
 </resources>

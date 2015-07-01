@@ -61,6 +61,14 @@ public class ComicAchievement implements Comparator<ComicAchievement>, Comparabl
         return BitmapFactory.decodeResource(context.getResources(), context.getResources().getIdentifier(levelImagePath, "drawable", context.getPackageName()));
     }
 
+    public Bitmap getLevelImageLarge(Context context) {
+        return BitmapFactory.decodeResource(context.getResources(), context.getResources().getIdentifier(levelImagePath + "_large", "drawable", context.getPackageName()));
+    }
+
+    public int getLevelImageId(Context context) {
+        return context.getResources().getIdentifier(levelImagePath, "drawable", context.getPackageName());
+    }
+
     @Override
     public int compare(ComicAchievement lhs, ComicAchievement rhs) {
         return lhs.getRequiredScore() - rhs.getRequiredScore();

@@ -1,6 +1,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="app.tmbao.comicreader.Activities.ComicViewActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" android:showAsAction="never" />
+    <item android:id="@+id/action_play" android:title="Speak"
+        android:icon="@drawable/ic_play_arrow_white_24dp"
+        android:showAsAction="ifRoom" />
+    <item android:id="@+id/action_previous" android:title="Previous"
+        android:icon="@drawable/ic_navigate_before_white_24dp"
+        android:showAsAction="ifRoom" />
+    <item android:id="@+id/action_next" android:title="Next"
+        android:icon="@drawable/ic_navigate_next_white_24dp"
+        android:showAsAction="ifRoom" />
+
 </menu>

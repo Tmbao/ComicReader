@@ -22,28 +22,13 @@
             <WebView
                 android:id="@+id/webview_question_statement"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/max_question_webview_height" />
-
-
-            <LinearLayout
-                android:paddingTop="10dp"
-                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal" >
+                android:layout_weight="1" />
 
-                <ListView
-                    android:id="@+id/list_options"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
-
-                <ImageButton
-                    android:id="@+id/button_hint"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_help_outline_black_24dp" />
-
-            </LinearLayout>
+            <ListView
+                android:id="@+id/list_options"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
 
 

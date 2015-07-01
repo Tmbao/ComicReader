@@ -21,9 +21,19 @@ public class ComicUserManager {
     private ComicUserManager() {
     }
 
+    public void setAchievementCallback(AchievementCallback achievementCallback) {
+        this.achievementCallback = achievementCallback;
+    }
+
+    public interface AchievementCallback {
+        void onNewAchievementUnlocked(ComicAchievement achievement);
+    }
+
     private int score;
     private Set<String> answeredQuestions;
     SharedPreferences record;
+
+    private AchievementCallback achievementCallback;
 
     public void load(Context context) {
         record = PreferenceManager.getDefaultSharedPreferences(context);
@@ -38,29 +48,24 @@ public class ComicUserManager {
         editor.commit();
     }
 
+    public void answerQuestion(String alias) {
+        answeredQuestions.add(alias);
+    }
+
     public void updateQuestion(Context context, String alias) {
         if (answeredQuestions.contains(alias) == false) {
-            answeredQuestions.add(alias);
+            answerQuestion(alias);
             score++;
 
             ComicAchievement achievement = ComicAchievementManager.getInstance().getAchievement(score);
             if (achievement.getRequiredScore() == score) {
-//                Show congratulation message
-                Toast.makeText(context, "Congratulation, you now become " + achievement.getLevelName(), Toast.LENGTH_SHORT).show();
-//                Play congratulation song
+                if (achievementCallback != null)
+                    achievementCallback.onNewAchievementUnlocked(achievement);
             }
         }
     }
 
     public int getScore() {
         return score;
-    }
-
-    public void showQuestionHint(Context context, int questionId) {
-        ComicPackage comicPackage = ComicPackage.getInstance();
-        answeredQuestions.add(comicPackage.getTitle() + "_" + comicPackage.getQuestion(questionId).getAlias());
-
-        Toast.makeText(context, "The answer is " + comicPackage.getQuestion(questionId).getOptions().get(
-                comicPackage.getQuestion(questionId).getCorrectOption()), Toast.LENGTH_SHORT).show();
     }
 }

@@ -7,10 +7,8 @@ import android.text.Html;
 import android.text.Spanned;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.webkit.WebView;
-import android.widget.ImageButton;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 
 import java.util.Locale;
 
@@ -25,10 +23,8 @@ public class ComicViewActivity extends Activity {
     ComicPackage comicPackage;
     ComicPageIdItem comicPageId;
 
-    ImageButton nextButton;
-    ImageButton previousButton;
-    ImageButton playButton;
-    TextView currentPageIdText;
+    ProgressBar progressPage;
+
     WebView webView;
 
     private void fetchingPages() {
@@ -48,36 +44,8 @@ public class ComicViewActivity extends Activity {
     private void initializeComponents() {
         comicPackage = ComicPackage.getInstance();
         getActionBar().setTitle(comicPackage.getTitle());
-
-        nextButton = (ImageButton) findViewById(R.id.button_next);
-        previousButton = (ImageButton) findViewById(R.id.button_previous);
-        playButton = (ImageButton) findViewById(R.id.button_play);
-        currentPageIdText = (TextView) findViewById(R.id.text_current_page_id);
         webView = (WebView) findViewById(R.id.webview_page_content);
-
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                comicPageId.setPageId(comicPageId.getPageId() + 1);
-                updatePage();
-            }
-        });
-
-        previousButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                comicPageId.setPageId(comicPageId.getPageId() - 1);
-                updatePage();
-            }
-        });
-
-        playButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Spanned text = Html.fromHtml(comicPackage.getPageText(comicPageId.getPageId()));
-                textToSpeech.speak(text.toString(), TextToSpeech.QUEUE_FLUSH, null);
-            }
-        });
+        webView.getSettings().setJavaScriptEnabled(true);
 
         textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
@@ -87,6 +55,9 @@ public class ComicViewActivity extends Activity {
                 }
             }
         });
+
+        progressPage = (ProgressBar) findViewById(R.id.progress_page);
+        progressPage.setMax(comicPackage.getNumberOfPages());
     }
 
     private void updatePage() {
@@ -96,19 +67,8 @@ public class ComicViewActivity extends Activity {
 
         webView.loadDataWithBaseURL("", comicPackage.getPageText(comicPageId.getPageId()), "text/html", "UTF-8", "");
 
-//        Start page
-        if (comicPageId.getPageId() == 0)
-            previousButton.setEnabled(false);
-        else
-            previousButton.setEnabled(true);
 
-//        Last page
-        if (comicPageId.getPageId() == comicPackage.numberOfPages() - 1)
-            nextButton.setEnabled(false);
-        else
-            nextButton.setEnabled(true);
-
-        currentPageIdText.setText("Page " + String.valueOf(comicPageId.getPageId()) + "/" + String.valueOf(comicPackage.numberOfPages()));
+        progressPage.setProgress(comicPageId.getPageId() + 1);
     }
 
     @Override
@@ -117,6 +77,9 @@ public class ComicViewActivity extends Activity {
             textToSpeech.stop();
             textToSpeech.shutdown();
         }
+        webView.stopLoading();
+        webView.loadUrl("");
+        webView.reload();
         super.onPause();
     }
 
@@ -143,7 +106,26 @@ public class ComicViewActivity extends Activity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+
+        if (id == R.id.action_next) {
+            if (comicPageId.getPageId() < comicPackage.getNumberOfPages() - 1) {
+                comicPageId.setPageId(comicPageId.getPageId() + 1);
+                updatePage();
+            }
+            return true;
+        } else if (id == R.id.action_previous) {
+            if (comicPageId.getPageId() > 0) {
+                comicPageId.setPageId(comicPageId.getPageId() - 1);
+                updatePage();
+            }
+            return true;
+        } else if (id == R.id.action_play) {
+            if (textToSpeech.isSpeaking()) {
+                textToSpeech.stop();
+            } else {
+                Spanned text = Html.fromHtml(comicPackage.getPageText(comicPageId.getPageId()));
+                textToSpeech.speak(text.toString(), TextToSpeech.QUEUE_FLUSH, null);
+            }
             return true;
         }
 

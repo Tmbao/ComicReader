@@ -1,15 +1,11 @@
 package app.tmbao.comicreader.Library;
 
-import android.graphics.Bitmap;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import app.tmbao.comicreader.R;
 
 /**
  * Created by minhbao on 6/29/15.
@@ -69,7 +65,7 @@ public class ComicPackage {
 //        Initialize pageFigures
         pagePaths = MediaHelper.getAllPageFiles(comicTitle.getPath());
         pageTexts = new ArrayList<>();
-        for (int index = 0; index < numberOfPages(); index++)
+        for (int index = 0; index < getNumberOfPages(); index++)
             pageTexts.add(null);
 
 //        Sample data
@@ -87,7 +83,7 @@ public class ComicPackage {
         return comicTitle.getTitle();
     }
 
-    public int numberOfPages() {
+    public int getNumberOfPages() {
         return pagePaths.size();
     }
 
