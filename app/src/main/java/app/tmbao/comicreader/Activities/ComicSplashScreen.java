@@ -33,7 +33,7 @@ public class ComicSplashScreen extends Activity {
         Thread timerThread = new Thread() {
             public void run() {
                 try {
-                    sleep(3000);
+                    sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } finally {
@@ -43,6 +43,12 @@ public class ComicSplashScreen extends Activity {
             }
         };
         timerThread.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
     }
 
     @Override

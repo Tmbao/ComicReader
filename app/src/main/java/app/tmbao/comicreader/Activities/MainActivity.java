@@ -78,11 +78,12 @@ public class MainActivity extends Activity {
     private static Context applicationContext;
 
     public static void updateShareContent(ComicAchievement achievement) {
-        SharePhoto photo = new SharePhoto.Builder().setBitmap(achievement.getLevelImageLarge(applicationContext)).build();
-        SharePhotoContent content = new SharePhotoContent.Builder().addPhoto(photo).build();
-
-        MainActivity.shareButton.setContentDescription(Profile.getCurrentProfile().getLastName() + " has become " + achievement.getLevelName());
-        MainActivity.shareButton.setShareContent(content);
+        if (Profile.getCurrentProfile() != null) {
+            SharePhoto photo = new SharePhoto.Builder().setBitmap(achievement.getLevelImageLarge(applicationContext)).build();
+            SharePhotoContent content = new SharePhotoContent.Builder().addPhoto(photo).build();
+            MainActivity.shareButton.setContentDescription(Profile.getCurrentProfile().getLastName() + " has become " + achievement.getLevelName());
+            MainActivity.shareButton.setShareContent(content);
+        }
     }
 
     private void updateScore() {

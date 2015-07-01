@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/image_loading"
         android:layout_gravity="bottom|center"
-        android:layout_width="160px"
+        android:layout_width="240px"
         android:layout_height="160px" />
 
 </GridLayout>
