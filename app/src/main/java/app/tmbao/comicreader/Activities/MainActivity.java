@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.database.MatrixCursor;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
@@ -231,14 +232,27 @@ public class MainActivity extends Activity {
         initializeListComicTitle();
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            Log.d("A", query);
+        }
+    }
+
     private void loadSuggestions(String text) {
         text = text.toLowerCase();
-        ArrayList<ComicTitleItem> suggItems = new ArrayList<ComicTitleItem>();
+        ArrayList<ComicTitleItem> suggItems = new ArrayList<>();
+        MatrixCursor cursor = new MatrixCursor(new String[] {"_id", "text"});
         for (int index = 0; index < comicTitleItems.size(); index++)
             if (comicTitleItems.get(index).getTitle().toLowerCase().contains(text)) {
                 suggItems.add(comicTitleItems.get(index));
+                cursor.addRow(new Object[] {suggItems.size(), comicTitleItems.get(index).getTitle()});
             }
-        listComic.setAdapter(new ComicTitleArrayAdapter(this, suggItems));
+//        listComic.setAdapter(new ComicTitleArrayAdapter(this, suggItems));
+
+        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSuggestionsAdapter(new ComicTitleCursorAdapter(this, cursor, suggItems));
     }
 
     @Override

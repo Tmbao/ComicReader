@@ -3,6 +3,7 @@
     <style name="ComicLightTheme" parent="@android:style/Theme.Material.Light.DarkActionBar">
         <item name="android:colorPrimaryDark">@color/com_facebook_button_background_color_pressed</item>
         <item name="android:colorPrimary">@color/com_facebook_button_background_color</item>
+        <item name="android:titleTextStyle">@android:color/white</item>
         <item name="android:windowBackground">@android:color/white</item>
         <item name="android:progressDrawable">@color/com_facebook_button_background_color</item>
     </style>
